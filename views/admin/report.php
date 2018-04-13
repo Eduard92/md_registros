@@ -85,7 +85,7 @@
                                 <?php $totales[$id_disciplina][$param] +=  $data[$group]['disciplinas'][$id_disciplina][$param];?>
                                 <td class="text-center">
                                     
-                                    <?=$data[$group]['disciplinas'][$id_disciplina][$param]?'<a>'.$data[$group]['disciplinas'][$id_disciplina][$param].'</a>':0?>
+                                    <?=$data[$group]['disciplinas'][$id_disciplina][$param]?'<a target="_blank" title="Descargar listado" href="'.base_url('admin/registros/download/'.$id_evento.'?group='.$group.'&disciplina='.$id_disciplina).'&param='.$param.'">'.$data[$group]['disciplinas'][$id_disciplina][$param].'</a>':0?>
                                 </td>
                             <?php endforeach;?>
 
