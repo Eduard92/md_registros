@@ -49,9 +49,14 @@
                 <?php if($tipo == 'deportivo'):?>
                  <?php foreach($head as $disciplina):?>                      
                        <?php foreach($disciplina['rama'] as $rama):?>
-                        <?php if($rama!=0): ?>
-                        <th class="text-center <?=$rama==1?'info':($rama==2?'danger':'')?>"><?=$rama==1?'VARONIL':($rama==2?'FEMENIL':'INDISTINTO')?></th>
-                         <?php endif ?>
+                        <?php if($rama!=0):?>
+
+                          <th class="text-center <?=$rama==1?'info':($rama==2?'danger':'')?>"><?=$rama==1?'VARONIL':($rama==2?'FEMENIL':' ')?></th>
+                        <?php else: ?>
+                         <?php foreach($disciplina['params'] as $param):?>
+                        <th class="text-center <?=$param==1?'info':($param==2?'danger':'')?>"><?=$param==1?'HOMBRE':($param==2?'MUJER':'ND')?></th>
+                      <?php endforeach;?>
+                        <?php endif ?>
                      <?php endforeach;?>
                   <?php endforeach;?>  
                 <?php else: ?>  
@@ -83,10 +88,16 @@
                                 <?php 
                                 $totales['total'] +=  $data[$group]['disciplinas'][$id_disciplina][$param];?>
                                 <?php $totales[$id_disciplina][$param] +=  $data[$group]['disciplinas'][$id_disciplina][$param];?>
+                                 <?php if($param==0): ?>.
+                                   <td class="text-center">                                    
+                                    <?=$data[$group]['disciplinas'][$id_disciplina][$param]?'<a target="_blank" title="Descargar listado" href="'.base_url('admin/registros/download/'.$id_evento.'?group='.$group.'&disciplina='.$id_disciplina).'&rama='.$param.'">'.$data[$group]['disciplinas'][$id_disciplina][$param].'</a>':0?>
+                                </td>  
+                                <?php else: ?>
                                 <td class="text-center">
                                     
-                                    <?=$data[$group]['disciplinas'][$id_disciplina][$param]?'<a target="_blank" title="Descargar listado" href="'.base_url('admin/registros/download/'.$id_evento.'?group='.$group.'&disciplina='.$id_disciplina).'&param='.$param.'">'.$data[$group]['disciplinas'][$id_disciplina][$param].'</a>':0?>
+                                    <?=$data[$group]['disciplinas'][$id_disciplina][$param]?'<a target="_blank" title="Descargar listado" href="'.base_url('admin/registros/download/'.$id_evento.'?group='.$group.'&disciplina='.$id_disciplina).'&rama='.$param.'">'.$data[$group]['disciplinas'][$id_disciplina][$param].'</a>':0?>
                                 </td>
+                                <?php endif ?>
                             <?php endforeach;?>
 
                         <?php }else{?>
