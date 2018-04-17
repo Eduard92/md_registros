@@ -966,6 +966,7 @@ class Admin extends Admin_Controller
         $disciplina = $this->input->get('disciplina');
         $group      = $this->input->get('group');
         $sexo       = $this->input->get('param');
+        $rama       = $this->input->get('rama');
         
         $base_where = array(
             'registros.id_evento' => $id,
@@ -1003,6 +1004,10 @@ class Admin extends Admin_Controller
         {
             $base_where['registros.sexo'] = $sexo;
         }
+        if(is_numeric($rama))
+        {
+            $base_where['registros.rama'] = $rama;
+        }
          if($group && $configuracion->group_by)
         {
             $base_where[$configuracion->module.'.'.$configuracion->group_by] = $group;
@@ -1021,13 +1026,18 @@ class Admin extends Admin_Controller
        $this->excel->getActiveSheet()->setTitle(date('d M Y'));
        $this->excel->getActiveSheet()->setCellValue('A1','ID');
        $this->excel->getActiveSheet()->setCellValue('C1','Participante');
-        $pos_x = 3;
+       $this->excel->getActiveSheet()->setCellValue('E1','Rama');
+       $pos_x = 4;
        if($configuracion->disciplinas)
        {
             $this->excel->getActiveSheet()->setCellValue('D1','Disciplina');
             $pos_x++;
        }
-       
+      /*        if($configuracion->rama)
+       {
+            $this->excel->getActiveSheet()->setCellValue('E1','Rama');
+            
+       }*/
        $this->excel->getActiveSheet()->setCellValue('B1',ucfirst($configuracion->module_id));
        
       
@@ -1054,7 +1064,7 @@ class Admin extends Admin_Controller
         foreach($registros as $index=>$registro)
         {
         
-            $pos_x = 3;   
+            $pos_x = 4;   
             
             if($configuracion->disciplinas)
             {
@@ -1066,7 +1076,19 @@ class Admin extends Admin_Controller
             $this->excel->getActiveSheet()->setCellValue('A'.($index+2),$registro->id);
             $this->excel->getActiveSheet()->setCellValue('B'.($index+2),$registro->module_id);
             $this->excel->getActiveSheet()->setCellValue('C'.($index+2),$registro->participante);
-            
+            if($registro->rama == 1)
+            {
+              $this->excel->getActiveSheet()->setCellValue('E'.($index+2),'VARONIL');
+            }
+            elseif($registro->rama == 2)
+            {
+                $this->excel->getActiveSheet()->setCellValue('E'.($index+2),'FEMENIL');     
+            }
+            else
+            {
+                $this->excel->getActiveSheet()->setCellValue('E'.($index+2),'INDISTINTO');
+            }
+            //$this->excel->getActiveSheet()->setCellValue('E'.($index+2),$registro->rama);
             
             
             $registro->extra = json_decode($registro->extra);
